@@ -127,6 +127,14 @@ SELECT sighting_id, get_time_of_day(sighting_time) AS time_of_day
 FROM sightings;
 
 
+-- Delete rangers who have never sighted any species
+DELETE FROM rangers
+WHERE ranger_id NOT IN (
+    SELECT DISTINCT ranger_id FROM sightings
+);
+
+
+
 
 
 
