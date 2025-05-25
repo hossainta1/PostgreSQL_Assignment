@@ -100,6 +100,35 @@ JOIN species sp ON si.species_id = sp.species_id
 JOIN rangers r ON si.ranger_id = r.ranger_id ORDER BY si.sighting_time DESC LIMIT 2;
 
 
+-- Update all species discovered before year 1800 to have status 'Historic'.
+
+UPDATE species
+SET conservation_status = 'Historic'
+WHERE discovery_date < '1800-01-01';
+
+
+-- Label each sighting's time of day as 'Morning', 'Afternoon', or 'Evening'.
+-- Step-1: Create the Function
+CREATE OR REPLACE FUNCTION get_time_of_day(s_time TIMESTAMP)
+RETURNS TEXT AS $$
+BEGIN
+    IF EXTRACT(HOUR FROM s_time) < 12 THEN
+        RETURN 'Morning';
+    ELSIF EXTRACT(HOUR FROM s_time) BETWEEN 12 AND 17 THEN
+        RETURN 'Afternoon';
+    ELSE
+        RETURN 'Evening';
+    END IF;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Step 2 Use the function for geeting result
+SELECT sighting_id, get_time_of_day(sighting_time) AS time_of_day
+FROM sightings;
+
+
+
+
 
 
 
