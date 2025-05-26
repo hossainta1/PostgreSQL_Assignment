@@ -179,7 +179,7 @@ INNER JOIN sightings s ON r.ranger_id = s.ranger_id;
 
 </pre>
 
-এখানে শুধুমাত্র সেই রেঞ্জারদের নাম ও লোকেশন আসবে যাদের সাইটিংস আছে।
+=> এখানে শুধুমাত্র সেই রেঞ্জারদের নাম ও লোকেশন আসবে যাদের সাইটিংস আছে।
 
 **LEFT JOIN – বাম টেবিলের সব রেকর্ড আনে, আর ডান পাশে মিল না থাকলে NULL দেয়**
 <pre lang="markdown"> 
@@ -189,7 +189,7 @@ LEFT JOIN sightings s ON r.ranger_id = s.ranger_id;
 
 </pre>
 
-এই ক্ষেত্রে, এমন রেঞ্জাররাও আসবে যাদের কোনো সাইটিংস নেই।
+=> এই ক্ষেত্রে, এমন রেঞ্জাররাও আসবে যাদের কোনো সাইটিংস নেই।
 
 **RIGHT JOIN – ডান টেবিলের সব রেকর্ড আনে**
 <pre lang="markdown"> 
@@ -198,7 +198,7 @@ FROM rangers r
 RIGHT JOIN sightings s ON r.ranger_id = s.ranger_id;
 </pre>
 
-এখানে সব সাইটিংস আসবে, এমনকি যদি কোনো রেঞ্জার মিসিং থাকে।
+=> এখানে সব সাইটিংস আসবে, এমনকি যদি কোনো রেঞ্জার মিসিং থাকে।
 
  **FULL OUTER JOIN – দুই দিকের সব রেকর্ডই আনে**
  <pre lang="markdown"> 
@@ -206,8 +206,65 @@ RIGHT JOIN sightings s ON r.ranger_id = s.ranger_id;
 FROM rangers r
 FULL OUTER JOIN sightings s ON r.ranger_id = s.ranger_id;
 </pre>
-বাম বা ডান, যেটাতে ডেটা আছে সব রেকর্ড আসবে।
+=> বাম বা ডান, যেটাতে ডেটা আছে সব রেকর্ড আসবে।
 
+
+
+## Explain the GROUP BY clause and its role in aggregation operations.
+
+### GROUP BY ক্লজ কী?
+GROUP BY ক্লজটি SQL-এ ব্যবহার হয় টেবিলের রেকর্ডগুলোকে নির্দিষ্ট কলামের মান অনুযায়ী দল বা গ্রুপে ভাগ করার জন্য।
+এই ক্লজটি সাধারণত Aggregation Function (যেমন: COUNT(), SUM(), AVG(), MIN(), MAX()) এর সাথে ব্যবহৃত হয়।
+
+## GROUP BY এর কাজ কী?
+
+ধরা যাক, প্রতিটি রেঞ্জার কতবার সাইটিং করেছে, বা প্রতিটি প্রজাতির গড় সংখ্যক সাইটিং কত, তখন GROUP BY ব্যবহার করতে হবে।
+
+**Syntax**
+<pre lang="markdown"> 
+SELECT column_name, AGGREGATE_FUNCTION(column_name2)
+FROM table_name
+GROUP BY column_name;
+</pre>
+
+**উদাহরণ (ব্যাখ্যা)**
+টেবিল: sightings
+
+| sighting\_id | ranger\_id | species\_id | location      |
+| ------------ | ---------- | ----------- | ------------- |
+| 1            | 1          | 2           | River Bend    |
+| 2            | 1          | 3           | Forest Edge   |
+| 3            | 2          | 2           | Mountain Base |
+| 4            | 3          | 1           | Snowfall Pass |
+
+
+**উদাহরণ: প্রতিটি রেঞ্জার কতটি সাইটিং করেছে?**
+<pre lang="markdown"> 
+SELECT ranger_id, COUNT(*) AS total_sightings
+FROM sightings
+GROUP BY ranger_id;
+
+</pre>
+
+**Output:**
+| ranger\_id | total\_sightings |
+| ---------- | ---------------- |
+| 1          | 2                |
+| 2          | 1                |
+| 3          | 1                |
+
+
+এখানে GROUP BY ranger_id অনুযায়ী সব রেকর্ড ভাগ হয়েছে এবং প্রতিটি গ্রুপে কতটি রেকর্ড আছে তা COUNT(*) দিয়ে বের করা হয়েছে।
+
+**উদাহরণ: প্রতিটি প্রজাতির গড় সাইটিং সংখ্যা**
+<pre lang="markdown"> 
+SELECT species_id, AVG(sighting_count) 
+FROM species_sightings
+GROUP BY species_id;
+</pre>
+
+### Aggregation Operations এর সাথে সম্পর্ক
+GROUP BY ছাড়া Aggregation কাজ করলে পুরো টেবিলের উপর গড়/যোগ/গণনা হয়। GROUP BY ব্যবহার করলে সেটা প্রতিটি গ্রুপের জন্য আলাদা আলাদা করে Aggregation করে।
 
 
 
