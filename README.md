@@ -47,7 +47,17 @@ Foreign Key এমন একটি কলাম যা অন্য টেবি
 - **এটি ডেটার Intregrity রক্ষা করে**
 
 **উদাহরণ:**
-<pre lang="markdown"> ```sql CREATE TABLE sightings ( sighting_id SERIAL PRIMARY KEY, species_id INT, ranger_id INT, location VARCHAR(100), sighting_time TIMESTAMP, FOREIGN KEY (ranger_id) REFERENCES rangers(ranger_id) ); ``` </pre>
+<pre lang="markdown">
+CREATE TABLE sightings (
+    sighting_id SERIAL PRIMARY KEY,
+    species_id INT,
+    ranger_id INT,
+    location VARCHAR(100),
+    sighting_time TIMESTAMP,
+    FOREIGN KEY (ranger_id) REFERENCES rangers(ranger_id)
+);
+``` </pre>
+
 
 এখানে ranger_id হচ্ছে Foreign Key যা rangers টেবিলের ranger_id কে রেফার করছে।
 
