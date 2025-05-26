@@ -27,13 +27,13 @@ Primary Key হচ্ছে একটি কলাম (বা একাধিক
 - **প্রতিটি টেবিলে সাধারণত একটি Primary Key থাকে**
 
  **উদাহরণ:**
-```
+<pre lang="markdown">
 CREATE TABLE rangers (
     ranger_id SERIAL PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
     region VARCHAR(100)
 );
-```
+``` </pre>
 
 এখানে ranger_id হচ্ছে Primary Key, যার মান প্রতিটি ranger জন্য ইউনিক হতে হবে।
 এটি অটোমেটিকভাবে 1, 2, 3... করে বাড়বে কারণ SERIAL ব্যবহার করা হয়েছে।
@@ -47,14 +47,7 @@ Foreign Key এমন একটি কলাম যা অন্য টেবি
 - **এটি ডেটার Intregrity রক্ষা করে**
 
 **উদাহরণ:**
-CREATE TABLE sightings (
-    sighting_id SERIAL PRIMARY KEY,
-    species_id INT,
-    ranger_id INT,
-    location VARCHAR(100),
-    sighting_time TIMESTAMP,
-    FOREIGN KEY (ranger_id) REFERENCES rangers(ranger_id)
-);
+<pre lang="markdown"> ```sql CREATE TABLE sightings ( sighting_id SERIAL PRIMARY KEY, species_id INT, ranger_id INT, location VARCHAR(100), sighting_time TIMESTAMP, FOREIGN KEY (ranger_id) REFERENCES rangers(ranger_id) ); ``` </pre>
 
 এখানে ranger_id হচ্ছে Foreign Key যা rangers টেবিলের ranger_id কে রেফার করছে।
 
@@ -81,11 +74,12 @@ code CHAR(5)
 যদি code ফিল্ডে "AB" ইনপুট করে, তাহলে এটা স্বয়ংক্রিয়ভাবে "AB " (3টি ফাঁকা স্পেস সহ) সংরক্ষণ করবে।
 
 **ব্যবহার উদাহরণ:**
-CREATE TABLE users (
+<pre lang="markdown"> ```CREATE TABLE users (
     user_id SERIAL PRIMARY KEY,
     username VARCHAR(20),  -- নাম ভিন্ন দৈর্ঘ্যের হতে পারে
     gender CHAR(1)         -- F/M হিসেবে সবসময় ১ অক্ষরের
-);
+);``` </pre>
+
 
 
 
